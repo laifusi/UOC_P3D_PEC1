@@ -32,4 +32,8 @@ public class LapData : ScriptableObject
         rotations.Clear();
     }
 
+    public int GetNumberOfSamples()
+    {
+        return positions.Count;
+    }
 }
