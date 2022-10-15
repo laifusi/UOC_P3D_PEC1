@@ -48,6 +48,9 @@ namespace UnityStandardAssets.Vehicles.Car
         private Rigidbody m_Rigidbody;
         private const float k_ReversingThreshold = 0.01f;
 
+        /// ///
+        private float initialTorque;
+
         public bool Skidding { get; private set; }
         public float BrakeInput { get; private set; }
         public float CurrentSteerAngle{ get { return m_SteerAngle; }}
@@ -59,6 +62,8 @@ namespace UnityStandardAssets.Vehicles.Car
         // Use this for initialization
         private void Start()
         {
+            initialTorque = m_FullTorqueOverAllWheels;
+
             m_WheelMeshLocalRotations = new Quaternion[4];
             for (int i = 0; i < 4; i++)
             {
@@ -363,6 +368,17 @@ namespace UnityStandardAssets.Vehicles.Car
                 }
             }
             return false;
+        }
+
+        /// ///
+        public void SetOutOfRoadSettings(float multiplier)
+        {
+            m_FullTorqueOverAllWheels *= multiplier;
+        }
+        /// ///
+        public void SetBackToRoadSettings()
+        {
+            m_FullTorqueOverAllWheels = initialTorque;
         }
     }
 }
