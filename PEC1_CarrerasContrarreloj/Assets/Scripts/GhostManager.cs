@@ -34,6 +34,9 @@ public class GhostManager : MonoBehaviour
         LapLine.OnNewLap += StartPlaying;
         LapLine.OnNewLap += StartRecording;
         LapLine.OnNewBestLap += UpdateBestLapSO;
+
+        // TESTING CINEMACHINE
+        StartPlaying(false);
     }
 
     #region RECORD GHOST DATA
