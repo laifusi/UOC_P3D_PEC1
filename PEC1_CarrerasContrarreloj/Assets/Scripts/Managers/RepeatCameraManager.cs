@@ -5,19 +5,45 @@ using Cinemachine;
 
 public class RepeatCameraManager : MonoBehaviour
 {
-    [SerializeField] private float secondsBetweenChanges = 3;
+    [SerializeField] GameObject repetitionCam;
+    [SerializeField] private float minTimeBetweenChanges = 2;
+    [SerializeField] private float maxTimeBetweenChanges = 6;
 
-    private List<CinemachineVirtualCamera> allCameras;
-    private List<CinemachineVirtualCamera> possibleCameras;
+    private List<CinemachineVirtualCamera> allCameras = new List<CinemachineVirtualCamera>();
+    private List<CinemachineVirtualCamera> possibleCameras = new List<CinemachineVirtualCamera>();
     private int currentCamera;
     private float timeSinceLastChange;
+    private float secondsBetweenChanges = 3;
+    private bool shouldAct;
+
+    private void Awake()
+    {
+        VCamera.OnAddedCamera += AddedCamera;
+        VCamera.OnRemovedCamera += RemovedCamera;
+    }
+
+    private void AddedCamera(CinemachineVirtualCamera cvc)
+    {
+        allCameras.Add(cvc);
+        possibleCameras.Add(cvc);
+    }
+
+    private void RemovedCamera(CinemachineVirtualCamera cvc)
+    {
+        allCameras.Remove(cvc);
+        possibleCameras.Remove(cvc);
+    }
 
     private void Update()
     {
+        if (!shouldAct)
+            return;
+
         if(timeSinceLastChange >= secondsBetweenChanges)
         {
             ChangeCamera();
             timeSinceLastChange = 0;
+            secondsBetweenChanges = Random.Range(minTimeBetweenChanges, maxTimeBetweenChanges);
         }
         else
         {
@@ -48,5 +74,34 @@ public class RepeatCameraManager : MonoBehaviour
             }
         }
         possibleCameras.RemoveAt(randomId);
+    }
+
+    [ContextMenu("StartRepetition")]
+    public void StartRepetition()
+    {
+        shouldAct = true;
+
+        if (allCameras.Count > 0)
+        {
+            ChangeCamera();
+        }
+
+        repetitionCam.SetActive(true);
+        secondsBetweenChanges = Random.Range(minTimeBetweenChanges, maxTimeBetweenChanges);
+    }
+
+    [ContextMenu("StopRepetition")]
+    public void StopRepetition()
+    {
+        shouldAct = false;
+
+        repetitionCam.SetActive(false);
+        timeSinceLastChange = 0;
+    }
+
+    private void OnDestroy()
+    {
+        VCamera.OnAddedCamera -= AddedCamera;
+        VCamera.OnRemovedCamera -= RemovedCamera;
     }
 }
