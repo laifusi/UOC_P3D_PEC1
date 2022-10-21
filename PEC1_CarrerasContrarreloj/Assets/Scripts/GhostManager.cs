@@ -8,6 +8,8 @@ public class GhostManager : MonoBehaviour
     public float timeBetweenSamples = 0.25f;
     public LapData bestLapSO;               // Ghost Data of the Best Lap
     public LapData currentLapSO;            // Ghost Data of the Current Lap
+    //public LapData bestRaceSO;              // Ghost Data of the Best Race
+    public LapData lastRaceSO;           // Ghost Data of the Current Race
     public GameObject carToRecord;
     public GameObject carToPlay;
 
@@ -22,6 +24,8 @@ public class GhostManager : MonoBehaviour
     private float totalPlayedTime = 0.0f;
     private float currentTimeBetweenPlaySamples = 0.0f;
     private int currentSampleToPlay = 0;
+    private LapData lapDataToReplay;
+    private GameObject carToReplay;
 
     // POSITIONS/ROTATIONS
     private Vector3 lastSamplePosition = Vector3.zero;
@@ -34,23 +38,26 @@ public class GhostManager : MonoBehaviour
         LapLine.OnNewLap += StartPlaying;
         LapLine.OnNewLap += StartRecording;
         LapLine.OnNewBestLap += UpdateBestLapSO;
-
-        // TESTING CINEMACHINE
-        //StartPlaying(false);
+        LevelManager.OnShowRepetition += StartRepetition;
+        LevelManager.OnEndRepetition += StopRepetition;
     }
 
     #region RECORD GHOST DATA
-    void StartRecording(bool isFirstLap)
+    void StartRecording(bool isFirstLap, bool isLastLap)
     {
-        shouldRecord = true;
+        shouldRecord = !isLastLap;
         //shouldPlay = false;
 
         // Seteamos los valores iniciales
         totalRecordedTime = 0;
         currentTimeBetweenSamples = 0;
+        recordedSamples = 0;
 
         // Limpiamos el scriptable object
-        currentLapSO.Reset();
+        if (!isLastLap)
+            currentLapSO.Reset();
+        if (isFirstLap)
+            lastRaceSO.Reset();
     }
 
     void StopRecording()
@@ -60,12 +67,12 @@ public class GhostManager : MonoBehaviour
     #endregion
 
     #region PLAY GHOST DATA
-    void StartPlaying(bool isFirstLap)
+    void StartPlaying(bool isFirstLap, bool isLastLap)
     {
         if (isFirstLap)
             return;
 
-        shouldPlay = true;
+        shouldPlay = !isLastLap;
         //shouldRecord = false;
 
         // Seteamos los valores iniciales
@@ -74,6 +81,9 @@ public class GhostManager : MonoBehaviour
         currentTimeBetweenPlaySamples = 0;
 
         carToPlay.SetActive(true);
+
+        lapDataToReplay = bestLapSO;
+        carToReplay = carToPlay;
 
         // Desactivamos el control del coche
         /*carToPlay.GetComponent<CarController>().enabled = false;
@@ -93,6 +103,46 @@ public class GhostManager : MonoBehaviour
     }
     #endregion
 
+    #region PLAY REPETITION DATA
+    void StartRepetition()
+    {
+        shouldPlay = true;
+        //shouldRecord = false;
+
+        // Seteamos los valores iniciales
+        totalPlayedTime = 0;
+        currentSampleToPlay = 0;
+        currentTimeBetweenPlaySamples = 0;
+
+        //carToRecord.SetActive(true);
+
+        lapDataToReplay = lastRaceSO;
+        carToReplay = carToRecord;
+
+        // Desactivamos el control del coche
+        carToRecord.GetComponent<CarController>().enabled = false;
+        carToRecord.GetComponent<CarUserControl>().enabled = false;
+        carToRecord.GetComponent<Rigidbody>().isKinematic = true;
+        Collider[] colliders = carToRecord.GetComponentsInChildren<Collider>();
+        foreach(Collider coll in colliders)
+        {
+            coll.enabled = false;
+        }
+    }
+
+    void StopRepetition()
+    {
+        shouldPlay = false;
+
+        //carToRecord.SetActive(false);
+
+        // Devolvemos el control al coche por si fuera necesario (opcional)
+        //carToRecord.GetComponent<CarController>().enabled = true;
+        //carToRecord.GetComponent<CarUserControl>().enabled = true;
+
+    }
+    #endregion
+
     private void Update()
     {
         if (shouldRecord)
@@ -102,11 +152,11 @@ public class GhostManager : MonoBehaviour
 
         if (shouldPlay)
         {
-            UpdateGhostTransform();
+            UpdatePlayCarTransform();
         }
     }
 
-    private void UpdateGhostTransform()
+    private void UpdatePlayCarTransform()
     {
         // A cada frame incrementamos el tiempo transcurrido 
         totalPlayedTime += Time.deltaTime;
@@ -120,10 +170,10 @@ public class GhostManager : MonoBehaviour
             lastSamplePosition = nextPosition;
             lastSampleRotation = nextRotation;
 
-            if(currentSampleToPlay < bestLapSO.GetNumberOfSamples())
+            if(currentSampleToPlay < lapDataToReplay.GetNumberOfSamples())
             {
                 // Cogemos los datos del scriptable object
-                bestLapSO.GetDataAt(currentSampleToPlay, out nextPosition, out nextRotation);
+                lapDataToReplay.GetDataAt(currentSampleToPlay, out nextPosition, out nextRotation);
             }
             else
             {
@@ -143,8 +193,8 @@ public class GhostManager : MonoBehaviour
         float percentageBetweenFrames = currentTimeBetweenPlaySamples / timeBetweenSamples;
 
         // Aplicamos un lerp entre las posiciones y rotaciones de la muestra anterior y la siguiente según el procentaje actual.
-        carToPlay.transform.position = Vector3.Slerp(lastSamplePosition, nextPosition, percentageBetweenFrames);
-        carToPlay.transform.rotation = Quaternion.Slerp(lastSampleRotation, nextRotation, percentageBetweenFrames);
+        carToReplay.transform.position = Vector3.Slerp(lastSamplePosition, nextPosition, percentageBetweenFrames);
+        carToReplay.transform.rotation = Quaternion.Slerp(lastSampleRotation, nextRotation, percentageBetweenFrames);
     }
 
     private void RecordCurrentData()
@@ -156,8 +206,9 @@ public class GhostManager : MonoBehaviour
         // Si el tiempo transcurrido es mayor que el tiempo de muestreo
         if (currentTimeBetweenSamples >= timeBetweenSamples)
         {
-            // Guardamos la información para el fantasma
+            // Guardamos la información para el fantasma y la repetición
             currentLapSO.AddNewData(carToRecord.transform);
+            lastRaceSO.AddNewData(carToRecord.transform);
             // Dejamos el tiempo extra entre una muestra y otra
             currentTimeBetweenSamples -= timeBetweenSamples;
             recordedSamples++;
@@ -172,7 +223,7 @@ public class GhostManager : MonoBehaviour
             if (shouldRecord)
                 StopRecording();
             else
-                StartRecording(true);
+                StartRecording(true, false);
         }
 
         // PLAY RECORDED LAP
@@ -181,7 +232,7 @@ public class GhostManager : MonoBehaviour
             if (shouldPlay)
                 StopPlaying();
             else
-                StartPlaying(true);
+                StartPlaying(true, false);
         }
 
         // RESET
@@ -192,6 +243,7 @@ public class GhostManager : MonoBehaviour
 
     public void UpdateBestLapSO()
     {
+        bestLapSO.Reset();
         Vector3 position;
         Quaternion rotation;
         for (int i = 0; i < recordedSamples; i++)
@@ -206,6 +258,8 @@ public class GhostManager : MonoBehaviour
         LapLine.OnNewLap -= StartPlaying;
         LapLine.OnNewLap -= StartRecording;
         LapLine.OnNewBestLap -= UpdateBestLapSO;
+        LevelManager.OnShowRepetition -= StartRepetition;
+        LevelManager.OnEndRepetition -= StopRepetition;
     }
 
     #if UNITY_EDITOR
@@ -214,6 +268,7 @@ public class GhostManager : MonoBehaviour
     {
         bestLapSO.Reset();
         currentLapSO.Reset();
+        lastRaceSO.Reset();
     }
     #endif
 }

@@ -47,5 +47,6 @@ MonoBehaviour:
   timeBetweenSamples: 0.25
   bestLapSO: {fileID: 11400000, guid: b30f309c17aa60a4d95765d07eb7fbef, type: 2}
   currentLapSO: {fileID: 11400000, guid: 8aaae423a5cc2d3448adedb35529c134, type: 2}
+  lastRaceSO: {fileID: 11400000, guid: 3ad1c536515f9474ba974ca975ed30bc, type: 2}
   carToRecord: {fileID: 0}
   carToPlay: {fileID: 0}

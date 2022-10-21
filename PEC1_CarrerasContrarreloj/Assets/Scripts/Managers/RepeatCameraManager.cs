@@ -20,6 +20,8 @@ public class RepeatCameraManager : MonoBehaviour
     {
         VCamera.OnAddedCamera += AddedCamera;
         VCamera.OnRemovedCamera += RemovedCamera;
+        LevelManager.OnShowRepetition += StartRepetition;
+        LevelManager.OnEndRepetition += StopRepetition;
     }
 
     private void AddedCamera(CinemachineVirtualCamera cvc)
@@ -79,6 +81,8 @@ public class RepeatCameraManager : MonoBehaviour
     [ContextMenu("StartRepetition")]
     public void StartRepetition()
     {
+        repetitionCam.SetActive(true);
+
         shouldAct = true;
 
         if (allCameras.Count > 0)
@@ -86,7 +90,6 @@ public class RepeatCameraManager : MonoBehaviour
             ChangeCamera();
         }
 
-        repetitionCam.SetActive(true);
         secondsBetweenChanges = Random.Range(minTimeBetweenChanges, maxTimeBetweenChanges);
     }
 
@@ -103,5 +106,7 @@ public class RepeatCameraManager : MonoBehaviour
     {
         VCamera.OnAddedCamera -= AddedCamera;
         VCamera.OnRemovedCamera -= RemovedCamera;
+        LevelManager.OnShowRepetition -= StartRepetition;
+        LevelManager.OnEndRepetition -= StopRepetition;
     }
 }

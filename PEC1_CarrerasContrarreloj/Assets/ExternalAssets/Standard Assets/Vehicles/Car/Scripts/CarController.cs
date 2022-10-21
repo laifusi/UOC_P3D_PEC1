@@ -370,12 +370,17 @@ namespace UnityStandardAssets.Vehicles.Car
             return false;
         }
 
-        /// ///
+        /// <summary>
+        /// Method to make car slower outside of the road
+        /// </summary>
+        /// <param name="multiplier"></param>
         public void SetOutOfRoadSettings(float multiplier)
         {
             m_FullTorqueOverAllWheels *= multiplier;
         }
-        /// ///
+        /// <summary>
+        /// Method to reset car's settings when back on the road
+        /// </summary>
         public void SetBackToRoadSettings()
         {
             m_FullTorqueOverAllWheels = initialTorque;

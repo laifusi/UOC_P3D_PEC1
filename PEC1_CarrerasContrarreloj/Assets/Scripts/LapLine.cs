@@ -12,7 +12,7 @@ public class LapLine : MonoBehaviour
     private float currentLapEndTime;
     private float bestTime;
 
-    public static event Action<bool> OnNewLap;
+    public static event Action<bool, bool> OnNewLap;
     public static event Action OnNewBestLap;
 
     private void OnTriggerEnter(Collider other)
@@ -33,12 +33,14 @@ public class LapLine : MonoBehaviour
             }
 
             Debug.Log("Lap Started!");
-            OnNewLap?.Invoke(currentLapId == 1);
+            OnNewLap?.Invoke(currentLapId == 1, currentLapId > numberOfLaps);
 
             currentLapStartTime = Time.unscaledTime;
             if(currentLapId > numberOfLaps)
             {
                 Debug.Log("Race Finished!");
+                LevelManager.Instance.EndRace();
+                GetComponent<Collider>().enabled = false;
             }
         }
     }
