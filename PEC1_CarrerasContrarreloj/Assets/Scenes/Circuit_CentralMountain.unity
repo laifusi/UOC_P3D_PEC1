@@ -584,7 +584,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 852567187375996720, guid: 95402ee6690ad1d4d85b62fff2ef620d, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 852567187376087880, guid: 95402ee6690ad1d4d85b62fff2ef620d, type: 3}
       propertyPath: m_RootOrder
@@ -632,11 +632,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 95402ee6690ad1d4d85b62fff2ef620d, type: 3}
---- !u!1 &529827410 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 852567187375996720, guid: 95402ee6690ad1d4d85b62fff2ef620d, type: 3}
-  m_PrefabInstance: {fileID: 529827409}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &658582747 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 183361487627117489, guid: 9993bff86c5261a4f9c95ec428acb405, type: 3}
@@ -863,6 +858,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ghost
       objectReference: {fileID: 0}
+    - target: {fileID: 2348308949005008241, guid: 7cd9a772af6c9da488767050a919d01e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2348308949005492489, guid: 7cd9a772af6c9da488767050a919d01e, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -909,11 +908,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7cd9a772af6c9da488767050a919d01e, type: 3}
---- !u!1 &726692498 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2348308949005008241, guid: 7cd9a772af6c9da488767050a919d01e, type: 3}
-  m_PrefabInstance: {fileID: 726692497}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &753458166
 GameObject:
   m_ObjectHideFlags: 0
@@ -2344,13 +2338,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3691809520129401637, guid: 556dc95f8383db14d8ebba03cf474e6f, type: 3}
-      propertyPath: carToPlay
-      value: 
-      objectReference: {fileID: 726692498}
-    - target: {fileID: 3691809520129401637, guid: 556dc95f8383db14d8ebba03cf474e6f, type: 3}
-      propertyPath: carToRecord
-      value: 
-      objectReference: {fileID: 529827410}
+      propertyPath: timeBetweenSamples
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3691809520129401638, guid: 556dc95f8383db14d8ebba03cf474e6f, type: 3}
       propertyPath: m_Name
       value: GhostManager

@@ -40,6 +40,9 @@ public class GhostManager : MonoBehaviour
         LapLine.OnNewBestLap += UpdateBestLapSO;
         LevelManager.OnShowRepetition += StartRepetition;
         LevelManager.OnEndRepetition += StopRepetition;
+
+        carToRecord = LevelManager.Instance.GetCar();
+        carToPlay = LevelManager.Instance.GetGhost();
     }
 
     #region RECORD GHOST DATA

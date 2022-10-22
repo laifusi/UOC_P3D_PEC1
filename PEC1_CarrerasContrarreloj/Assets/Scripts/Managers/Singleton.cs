@@ -6,17 +6,14 @@ public class Singleton<T> : MonoBehaviour
 {
     public static T Instance;
 
-    void Start()
+    protected void Awake()
     {
-        Debug.Log("HELLOO");
         if (Instance != null)
         {
-            Debug.Log("NOT UNIQUE");
             Destroy(gameObject);
         }
         else
         {
-            Debug.Log("UNIQUE");
             Instance = GetComponent<T>();
         }
     }

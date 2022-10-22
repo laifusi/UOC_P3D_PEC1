@@ -5,8 +5,8 @@ using UnityEngine;
 [CreateAssetMenu]
 public class LapData : ScriptableObject
 {
-    List<Vector3> positions;
-    List<Quaternion> rotations;
+    List<Vector3> positions = new List<Vector3>();
+    List<Quaternion> rotations = new List<Quaternion>();
 
     public void AddNewData(Transform transform)
     {

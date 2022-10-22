@@ -6,15 +6,20 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : PersistentSingleton<GameManager>
 {
-    private GameObject carPrefab;
+    private  ChosenCarData carData;
 
-    public void SelectCar(GameObject selectedCarPrefab)
+    public void SelectCar(ChosenCarData selectedCarData)
     {
-        carPrefab = selectedCarPrefab;
+        carData = selectedCarData;
     }
 
     public GameObject GetCar()
     {
-        return carPrefab;
+        return carData.GetCar();
+    }
+
+    public GameObject GetGhost()
+    {
+        return carData.GetGhost();
     }
 }

@@ -1338,7 +1338,7 @@ MonoBehaviour:
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_ObjectArgumentAssemblyTypeName: ChosenCarData, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -2319,8 +2319,8 @@ MonoBehaviour:
         m_MethodName: SelectCar
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 852567187375996720, guid: 95402ee6690ad1d4d85b62fff2ef620d, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_ObjectArgument: {fileID: 11400000, guid: ed5aef449e8fff44995a6745626340f1, type: 2}
+          m_ObjectArgumentAssemblyTypeName: ChosenCarData, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

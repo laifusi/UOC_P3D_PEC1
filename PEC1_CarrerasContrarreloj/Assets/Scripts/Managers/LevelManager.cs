@@ -12,9 +12,15 @@ public class LevelManager : Singleton<LevelManager>
     public static Action OnShowRepetition;
     public static Action OnEndRepetition;
 
+    private GameObject car;
+    private GameObject ghost;
+
     private void Awake()
     {
-        //Instantiate(GameManager.Instance.GetCar(), startPosition.position, startPosition.rotation);
+        base.Awake();
+        car = Instantiate(GameManager.Instance.GetCar(), startPosition.position, startPosition.rotation);
+        ghost = Instantiate(GameManager.Instance.GetGhost(), startPosition.position, startPosition.rotation);
+        ghost.SetActive(false);
     }
 
     public void EndRace()
@@ -32,5 +38,15 @@ public class LevelManager : Singleton<LevelManager>
     {
         gameCamera.SetActive(true);
         OnEndRepetition?.Invoke();
+    }
+
+    public GameObject GetCar()
+    {
+        return car;
+    }
+
+    public GameObject GetGhost()
+    {
+        return ghost;
     }
 }

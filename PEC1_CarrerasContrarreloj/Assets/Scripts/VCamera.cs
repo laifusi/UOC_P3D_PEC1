@@ -20,6 +20,9 @@ public class VCamera : MonoBehaviour
     {
         OnAddedCamera?.Invoke(cvc);
         gameObject.SetActive(false);
+
+        cvc.m_Follow = LevelManager.Instance.GetCar().transform;
+        cvc.m_LookAt = LevelManager.Instance.GetCar().transform;
     }
 
     private void OnDestroy()
