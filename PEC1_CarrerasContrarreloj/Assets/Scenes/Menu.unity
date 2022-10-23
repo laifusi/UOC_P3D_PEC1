@@ -581,6 +581,7 @@ GameObject:
   - component: {fileID: 275360090}
   - component: {fileID: 275360089}
   - component: {fileID: 275360088}
+  - component: {fileID: 275360091}
   m_Layer: 5
   m_Name: CircuitButton (1)
   m_TagString: Untagged
@@ -653,8 +654,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2042738902}
-        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
+      - m_Target: {fileID: 275360091}
+        m_TargetAssemblyTypeName: UIButtons, Assembly-CSharp
         m_MethodName: PlayCircuit
         m_Mode: 3
         m_Arguments:
@@ -703,6 +704,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 275360086}
   m_CullTransparentMesh: 1
+--- !u!114 &275360091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 275360086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e76624a0dd90a9544a7817e1f8a54c25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &360218853
 GameObject:
   m_ObjectHideFlags: 0
@@ -818,6 +831,7 @@ GameObject:
   - component: {fileID: 410624263}
   - component: {fileID: 410624262}
   - component: {fileID: 410624261}
+  - component: {fileID: 410624264}
   m_Layer: 5
   m_Name: ExitButton
   m_TagString: Untagged
@@ -890,9 +904,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2042738902}
-        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
-        m_MethodName: ExitGame
+      - m_Target: {fileID: 410624264}
+        m_TargetAssemblyTypeName: UIButtons, Assembly-CSharp
+        m_MethodName: Exit
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -940,6 +954,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410624259}
   m_CullTransparentMesh: 1
+--- !u!114 &410624264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 410624259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e76624a0dd90a9544a7817e1f8a54c25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &443673045
 GameObject:
   m_ObjectHideFlags: 0
@@ -1236,6 +1262,7 @@ GameObject:
   - component: {fileID: 523637497}
   - component: {fileID: 523637496}
   - component: {fileID: 523637495}
+  - component: {fileID: 523637498}
   m_Layer: 5
   m_Name: CarButton
   m_TagString: Untagged
@@ -1332,8 +1359,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1450814836}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+      - m_Target: {fileID: 523637498}
+        m_TargetAssemblyTypeName: UIButtons, Assembly-CSharp
         m_MethodName: SelectCar
         m_Mode: 2
         m_Arguments:
@@ -1382,6 +1409,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 523637493}
   m_CullTransparentMesh: 1
+--- !u!114 &523637498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 523637493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e76624a0dd90a9544a7817e1f8a54c25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &590321688
 GameObject:
   m_ObjectHideFlags: 0
@@ -2218,6 +2257,7 @@ GameObject:
   - component: {fileID: 1281543353}
   - component: {fileID: 1281543352}
   - component: {fileID: 1281543351}
+  - component: {fileID: 1281543354}
   m_Layer: 5
   m_Name: CarButton
   m_TagString: Untagged
@@ -2314,8 +2354,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1450814836}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+      - m_Target: {fileID: 1281543354}
+        m_TargetAssemblyTypeName: UIButtons, Assembly-CSharp
         m_MethodName: SelectCar
         m_Mode: 2
         m_Arguments:
@@ -2364,6 +2404,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1281543349}
   m_CullTransparentMesh: 1
+--- !u!114 &1281543354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1281543349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e76624a0dd90a9544a7817e1f8a54c25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1417167850
 GameObject:
   m_ObjectHideFlags: 0
@@ -2689,6 +2741,7 @@ GameObject:
   - component: {fileID: 1581857558}
   - component: {fileID: 1581857557}
   - component: {fileID: 1581857556}
+  - component: {fileID: 1581857559}
   m_Layer: 5
   m_Name: CircuitButton
   m_TagString: Untagged
@@ -2761,8 +2814,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2042738902}
-        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
+      - m_Target: {fileID: 1581857559}
+        m_TargetAssemblyTypeName: UIButtons, Assembly-CSharp
         m_MethodName: PlayCircuit
         m_Mode: 3
         m_Arguments:
@@ -2770,7 +2823,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 1
           m_FloatArgument: 0
-          m_StringArgument: 1
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1581857557
@@ -2811,6 +2864,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1581857554}
   m_CullTransparentMesh: 1
+--- !u!114 &1581857559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1581857554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e76624a0dd90a9544a7817e1f8a54c25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1596330089
 GameObject:
   m_ObjectHideFlags: 0

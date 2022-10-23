@@ -35,11 +35,11 @@ public class UILapTimes : MonoBehaviour
             hours = (int)timeInSeconds / 3600;
             minutes = (int)(timeInSeconds - hours*3600) / 60;
             seconds = timeInSeconds - hours * 3600 - minutes * 60;
-            time = hours > 9 ? hours.ToString() : '0' + hours.ToString();
+            time = (int)hours > 9 ? hours.ToString() : '0' + hours.ToString();
             time += ':';
-            time += minutes > 9 ? minutes.ToString() : '0' + minutes.ToString();
+            time += (int)minutes > 9 ? minutes.ToString() : '0' + minutes.ToString();
             time += ':';
-            time += seconds > 9 ? seconds.ToString("F2") : '0' + seconds.ToString("F2");
+            time += (int)seconds > 9 ? seconds.ToString("F2") : '0' + seconds.ToString("F2");
             text.SetText(time);
             text.enabled = true;
         }

@@ -17,4 +17,9 @@ public class Singleton<T> : MonoBehaviour
             Instance = GetComponent<T>();
         }
     }
+
+    private void OnDestroy()
+    {
+        Instance = default(T);
+    }
 }
