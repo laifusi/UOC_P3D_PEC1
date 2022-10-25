@@ -64,8 +64,10 @@ public class RepeatCameraManager : MonoBehaviour
     private void ChangeCamera()
     {
         int randomId = Random.Range(0, possibleCameras.Count);
-        allCameras[currentCamera].gameObject.SetActive(false);
-        possibleCameras[randomId].gameObject.SetActive(true);
+        //allCameras[currentCamera].gameObject.SetActive(false);
+        //possibleCameras[randomId].gameObject.SetActive(true);
+        allCameras[currentCamera].m_Priority = 10;
+        possibleCameras[randomId].m_Priority = 11;
         possibleCameras.Add(allCameras[currentCamera]);
         for(int i = 0; i < allCameras.Count; i++)
         {
@@ -83,6 +85,11 @@ public class RepeatCameraManager : MonoBehaviour
     {
         repetitionCam.SetActive(true);
 
+        for(int i = 0; i < allCameras.Count; i++)
+        {
+            allCameras[i].gameObject.SetActive(true);
+        }
+
         shouldAct = true;
 
         if (allCameras.Count > 0)
@@ -97,6 +104,11 @@ public class RepeatCameraManager : MonoBehaviour
     public void StopRepetition()
     {
         shouldAct = false;
+
+        for (int i = 0; i < allCameras.Count; i++)
+        {
+            allCameras[i].gameObject.SetActive(false);
+        }
 
         repetitionCam.SetActive(false);
         timeSinceLastChange = 0;

@@ -31,6 +31,7 @@ public class LevelManager : Singleton<LevelManager>
     public void StartRepetition()
     {
         gameCamera.SetActive(false);
+        ghost.SetActive(false);
         OnShowRepetition?.Invoke();
     }
 
