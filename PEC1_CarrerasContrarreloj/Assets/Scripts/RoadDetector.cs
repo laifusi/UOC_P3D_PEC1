@@ -15,18 +15,16 @@ public class RoadDetector : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if(other.GetComponent<ERModularRoad>() != null)
+        if(other.CompareTag("Road"))
         {
-            Debug.Log("Entramos en Road");
             car.SetBackToRoadSettings();
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.GetComponent<ERModularRoad>() != null)
+        if (other.CompareTag("Road"))
         {
-            Debug.Log("Salimos de Road");
             car.SetOutOfRoadSettings(velocityReductionMultiplier);
         }
     }
