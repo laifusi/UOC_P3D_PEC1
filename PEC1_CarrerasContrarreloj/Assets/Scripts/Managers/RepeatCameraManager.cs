@@ -21,6 +21,7 @@ public class RepeatCameraManager : MonoBehaviour
         VCamera.OnAddedCamera += AddedCamera;
         VCamera.OnRemovedCamera += RemovedCamera;
         LevelManager.OnShowRepetition += StartRepetition;
+        LevelManager.OnSwitchRepetition += SwitchCameraActive;
         LevelManager.OnEndRepetition += StopRepetition;
     }
 
@@ -100,6 +101,12 @@ public class RepeatCameraManager : MonoBehaviour
         secondsBetweenChanges = Random.Range(minTimeBetweenChanges, maxTimeBetweenChanges);
     }
 
+    private void SwitchCameraActive()
+    {
+        shouldAct = !shouldAct;
+        repetitionCam.SetActive(shouldAct);
+    }
+
     [ContextMenu("StopRepetition")]
     public void StopRepetition()
     {
@@ -119,6 +126,7 @@ public class RepeatCameraManager : MonoBehaviour
         VCamera.OnAddedCamera -= AddedCamera;
         VCamera.OnRemovedCamera -= RemovedCamera;
         LevelManager.OnShowRepetition -= StartRepetition;
+        LevelManager.OnSwitchRepetition -= SwitchCameraActive;
         LevelManager.OnEndRepetition -= StopRepetition;
     }
 }

@@ -10,10 +10,12 @@ public class LevelManager : Singleton<LevelManager>
     [SerializeField] private GameObject gameCamera;
 
     public static Action OnShowRepetition;
+    public static Action OnSwitchRepetition;
     public static Action OnEndRepetition;
 
     private GameObject car;
     private GameObject ghost;
+    private bool mainCamIsActive;
 
     private void Awake()
     {
@@ -31,13 +33,22 @@ public class LevelManager : Singleton<LevelManager>
     public void StartRepetition()
     {
         gameCamera.SetActive(false);
+        mainCamIsActive = false;
         ghost.SetActive(false);
         OnShowRepetition?.Invoke();
+    }
+
+    public void SwitchRepetitionCamera()
+    {
+        gameCamera.SetActive(!mainCamIsActive);
+        mainCamIsActive = !mainCamIsActive;
+        OnSwitchRepetition?.Invoke();
     }
 
     public void StopRepetition()
     {
         gameCamera.SetActive(true);
+        mainCamIsActive = true;
         OnEndRepetition?.Invoke();
     }
 
