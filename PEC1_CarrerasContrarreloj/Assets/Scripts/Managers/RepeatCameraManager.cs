@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
@@ -9,12 +8,12 @@ public class RepeatCameraManager : MonoBehaviour
     [SerializeField] private float minTimeBetweenChanges = 2;
     [SerializeField] private float maxTimeBetweenChanges = 6;
 
-    private List<CinemachineVirtualCamera> allCameras = new List<CinemachineVirtualCamera>();
-    private List<CinemachineVirtualCamera> possibleCameras = new List<CinemachineVirtualCamera>();
-    private int currentCamera;
-    private float timeSinceLastChange;
-    private float secondsBetweenChanges = 3;
-    private bool shouldAct;
+    private List<CinemachineVirtualCamera> allCameras = new List<CinemachineVirtualCamera>();       // List of all the Virtual Cameras
+    private List<CinemachineVirtualCamera> possibleCameras = new List<CinemachineVirtualCamera>();  // List of the possible cameras to change to
+    private int currentCamera;              // Position of the currently active camera in the all cameras list
+    private float timeSinceLastChange;      // Seconds since the last change of TV-like camera
+    private float secondsBetweenChanges;    // Current randomly calculated time to wait until the next change of camera
+    private bool shouldAct;                 // Boolean to define if repetition is active
 
     private void Awake()
     {
@@ -25,23 +24,35 @@ public class RepeatCameraManager : MonoBehaviour
         LevelManager.OnEndRepetition += StopRepetition;
     }
 
+    /// <summary>
+    /// Method to add all the virtual cameras in the scene
+    /// </summary>
+    /// <param name="cvc">New CinemachineVirtualCamera detected</param>
     private void AddedCamera(CinemachineVirtualCamera cvc)
     {
         allCameras.Add(cvc);
         possibleCameras.Add(cvc);
     }
 
+    /// <summary>
+    /// Method to remove destroyed virtual cameras
+    /// </summary>
+    /// <param name="cvc">CinemachineVirtualCamera destroyed detected</param>
     private void RemovedCamera(CinemachineVirtualCamera cvc)
     {
         allCameras.Remove(cvc);
         possibleCameras.Remove(cvc);
     }
 
+    /// <summary>
+    /// Update method to update the time passed since the last change and activate the change when needed
+    /// </summary>
     private void Update()
     {
         if (!shouldAct)
             return;
 
+        // If the random time between changes passed, we change the camera and calculate a new random time for the next change
         if(timeSinceLastChange >= secondsBetweenChanges)
         {
             ChangeCamera();
@@ -57,7 +68,7 @@ public class RepeatCameraManager : MonoBehaviour
     /// <summary>
     /// Method to randomly change the active virtual camera
     /// We get a random camera different from the current one
-    /// We deactivate the previous one and activate the new one
+    /// We reduce the previous one and increase the new one
     /// We add the previous camera to the possible cameras for the next change
     /// We find the new camera's position in the complete list of cameras
     /// We remove the new camera from the possible cameras for the next change
@@ -65,8 +76,6 @@ public class RepeatCameraManager : MonoBehaviour
     private void ChangeCamera()
     {
         int randomId = Random.Range(0, possibleCameras.Count);
-        //allCameras[currentCamera].gameObject.SetActive(false);
-        //possibleCameras[randomId].gameObject.SetActive(true);
         allCameras[currentCamera].m_Priority = 10;
         possibleCameras[randomId].m_Priority = 11;
         possibleCameras.Add(allCameras[currentCamera]);
@@ -81,7 +90,9 @@ public class RepeatCameraManager : MonoBehaviour
         possibleCameras.RemoveAt(randomId);
     }
 
-    [ContextMenu("StartRepetition")]
+    /// <summary>
+    /// Method that reacts to the start of the camera repetition, activating the cameras and randomly setting the first active one
+    /// </summary>
     public void StartRepetition()
     {
         repetitionCam.SetActive(true);
@@ -101,13 +112,18 @@ public class RepeatCameraManager : MonoBehaviour
         secondsBetweenChanges = Random.Range(minTimeBetweenChanges, maxTimeBetweenChanges);
     }
 
+    /// <summary>
+    /// Method to activate/deactivate the cameras when the Switch Camera Button is pressed
+    /// </summary>
     private void SwitchCameraActive()
     {
         shouldAct = !shouldAct;
         repetitionCam.SetActive(shouldAct);
     }
 
-    [ContextMenu("StopRepetition")]
+    /// <summary>
+    /// Method to deactivate the repetition and the cameras
+    /// </summary>
     public void StopRepetition()
     {
         shouldAct = false;

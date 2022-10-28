@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.Vehicles.Car;
 
@@ -8,10 +6,9 @@ public class GhostManager : MonoBehaviour
     public float timeBetweenSamples = 0.25f;
     public LapData bestLapSO;               // Ghost Data of the Best Lap
     public LapData currentLapSO;            // Ghost Data of the Current Lap
-    //public LapData bestRaceSO;              // Ghost Data of the Best Race
     public LapData lastRaceSO;           // Ghost Data of the Current Race
-    public GameObject carToRecord;
-    public GameObject carToPlay;
+    public GameObject playableCar;      // GameObject of the car to record
+    public GameObject ghostCar;        // GameObject of the ghost
 
     // RECORD VARIABLES
     private bool shouldRecord = false;
@@ -41,8 +38,8 @@ public class GhostManager : MonoBehaviour
         LevelManager.OnShowRepetition += StartRepetition;
         LevelManager.OnEndRepetition += StopRepetition;
 
-        carToRecord = LevelManager.Instance.GetCar();
-        carToPlay = LevelManager.Instance.GetGhost();
+        playableCar = LevelManager.Instance.GetCar();
+        ghostCar = LevelManager.Instance.GetGhost();
     }
 
     #region RECORD GHOST DATA
@@ -83,10 +80,10 @@ public class GhostManager : MonoBehaviour
         currentSampleToPlay = 0;
         currentTimeBetweenPlaySamples = 0;
 
-        carToPlay.SetActive(true);
+        ghostCar.SetActive(true);
 
         lapDataToReplay = bestLapSO;
-        carToReplay = carToPlay;
+        carToReplay = ghostCar;
 
         // Desactivamos el control del coche
         /*carToPlay.GetComponent<CarController>().enabled = false;
@@ -97,7 +94,7 @@ public class GhostManager : MonoBehaviour
     {
         shouldPlay = false;
 
-        carToPlay.SetActive(false);
+        ghostCar.SetActive(false);
 
         // Devolvemos el control al coche por si fuera necesario (opcional)
         //carToPlay.GetComponent<CarController>().enabled = true;
@@ -110,23 +107,20 @@ public class GhostManager : MonoBehaviour
     void StartRepetition()
     {
         shouldPlay = true;
-        //shouldRecord = false;
 
         // Seteamos los valores iniciales
         totalPlayedTime = 0;
         currentSampleToPlay = 0;
         currentTimeBetweenPlaySamples = 0;
 
-        //carToRecord.SetActive(true);
-
         lapDataToReplay = lastRaceSO;
-        carToReplay = carToRecord;
+        carToReplay = playableCar;
 
-        // Desactivamos el control del coche
-        carToRecord.GetComponent<CarController>().enabled = false;
-        carToRecord.GetComponent<CarUserControl>().enabled = false;
-        carToRecord.GetComponent<Rigidbody>().isKinematic = true;
-        Collider[] colliders = carToRecord.GetComponentsInChildren<Collider>();
+        // Desactivamos el control y los colliders del coche
+        playableCar.GetComponent<CarController>().enabled = false;
+        playableCar.GetComponent<CarUserControl>().enabled = false;
+        playableCar.GetComponent<Rigidbody>().isKinematic = true;
+        Collider[] colliders = playableCar.GetComponentsInChildren<Collider>();
         foreach(Collider coll in colliders)
         {
             coll.enabled = false;
@@ -136,13 +130,6 @@ public class GhostManager : MonoBehaviour
     void StopRepetition()
     {
         shouldPlay = false;
-
-        //carToRecord.SetActive(false);
-
-        // Devolvemos el control al coche por si fuera necesario (opcional)
-        //carToRecord.GetComponent<CarController>().enabled = true;
-        //carToRecord.GetComponent<CarUserControl>().enabled = true;
-
     }
     #endregion
 
@@ -173,6 +160,7 @@ public class GhostManager : MonoBehaviour
             lastSamplePosition = nextPosition;
             lastSampleRotation = nextRotation;
 
+            // Si se acaban los datos guardados, dejamos de reproducir
             if(currentSampleToPlay < lapDataToReplay.GetNumberOfSamples())
             {
                 // Cogemos los datos del scriptable object
@@ -210,40 +198,17 @@ public class GhostManager : MonoBehaviour
         if (currentTimeBetweenSamples >= timeBetweenSamples)
         {
             // Guardamos la información para el fantasma y la repetición
-            currentLapSO.AddNewData(carToRecord.transform);
-            lastRaceSO.AddNewData(carToRecord.transform);
+            currentLapSO.AddNewData(playableCar.transform);
+            lastRaceSO.AddNewData(playableCar.transform);
             // Dejamos el tiempo extra entre una muestra y otra
             currentTimeBetweenSamples -= timeBetweenSamples;
             recordedSamples++;
         }
     }
 
-    void HandleTestActionInputs()
-    {
-        // START/STOP RECORDING
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            if (shouldRecord)
-                StopRecording();
-            else
-                StartRecording(true, false);
-        }
-
-        // PLAY RECORDED LAP
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            if (shouldPlay)
-                StopPlaying();
-            else
-                StartPlaying(true, false);
-        }
-
-        // RESET
-        if (Input.GetKeyDown(KeyCode.Delete))
-            bestLapSO.Reset();
-    }
-
-
+    /// <summary>
+    /// Method activated by the New Best Lap event that saves the last lap's data into the best lap data SO
+    /// </summary>
     public void UpdateBestLapSO()
     {
         bestLapSO.Reset();

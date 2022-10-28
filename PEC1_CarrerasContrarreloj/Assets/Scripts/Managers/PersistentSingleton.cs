@@ -1,7 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Parent class to define the Singleton pattern across all scenes
+/// Used for global Managers that should be unique and accessible
+/// </summary>
 public class PersistentSingleton<T> : MonoBehaviour
 {
     public static T Instance;

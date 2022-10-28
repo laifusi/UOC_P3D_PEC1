@@ -1,7 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Connecting class for Buttons that need to access global Managers (Persistent Singletons)
+/// </summary>
 public class UIButtons : MonoBehaviour
 {
     public void Menu()

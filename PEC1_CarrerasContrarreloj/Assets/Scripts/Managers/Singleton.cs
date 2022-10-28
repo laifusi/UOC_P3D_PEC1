@@ -1,7 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Parent class to define the Singleton pattern only in the current scene
+/// Used for particular Managers that should be unique and accessible in their own scene
+/// </summary>
 public class Singleton<T> : MonoBehaviour
 {
     public static T Instance;

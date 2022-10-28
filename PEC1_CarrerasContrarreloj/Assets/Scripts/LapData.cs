@@ -1,7 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// ScriptableObject to save and recover the data of a Lap or Race
+/// </summary>
 [CreateAssetMenu]
 public class LapData : ScriptableObject
 {
@@ -31,7 +33,7 @@ public class LapData : ScriptableObject
         positions.Clear();
         rotations.Clear();
     }
-
+    
     public int GetNumberOfSamples()
     {
         return positions.Count;

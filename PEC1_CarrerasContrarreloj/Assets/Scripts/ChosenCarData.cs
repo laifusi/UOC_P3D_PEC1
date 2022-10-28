@@ -1,7 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Scriptable Object to save the prefabs connected to the different car options
+/// </summary>
 [CreateAssetMenu]
 public class ChosenCarData : ScriptableObject
 {

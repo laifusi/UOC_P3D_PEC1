@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -28,6 +26,11 @@ public class UILapTimes : MonoBehaviour
         text.enabled = false;
     }
 
+    /// <summary>
+    /// Method that translates and updates the time to a 00:00:00.00 formatted time Text
+    /// </summary>
+    /// <param name="type">TypeOfLapText that defines if the UILapTimes is affected by the invoked event</param>
+    /// <param name="timeInSeconds">Time in seconds that needs to be written in the Text</param>
     private void UpdateTime(TypeOfLapText type, float timeInSeconds)
     {
         if(this.type == type)
@@ -58,6 +61,10 @@ public class UILapTimes : MonoBehaviour
     }
 }
 
+/// <summary>
+/// Enum that defines the types of Time texts that can be updated
+/// Invalid won't be used by anyone
+/// </summary>
 public enum TypeOfLapText
 {
     CurrentLap, BestLap, FirstLap, SecondLap, ThirdLap, Invalid
