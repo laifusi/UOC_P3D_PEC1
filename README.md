@@ -1,92 +1,33 @@
 # PEC 1 - Carreras Contrarreloj
 
+## Cómo jugar
+Al iniciar el juego, se escoge un coche, de entre dos, y un circuito, para lo que también vemos dos opciones.
+Cuando se selecciona el circuito, se inicia la escena de juego escogida.
+Una vez en esta, la carrera puede comenzar. Lo hará en cuanto el jugador pase por la línea de salida por primera vez.
+Para controlar el coche, se tendrán que usar las teclas W, para acelerar, A y D para girar y S para frenar o ir marcha atrás.
+Cuando se inicie una vuelta, el contador empezará a correr.
+Al finalizar una vuelta, se guardará y se mostrará el tiempo de esta, además de actualizar el tiempo de la mejor vuelta de la carrera.
+Además, al finalizar la primera vuelta, aparecerá el coche fantasma, que mostrará el recorrido de la mejor vuelta.
+Cuando se acabe la carrera, después de tres vueltas, se podrá ver una repetición de la carrera completa.
 
+## Estructura e Implementación
+El juego se divide en tres escenas, el menú y los dos circuitos.
+Para cada uno de los circuitos, se ha creado un terreno sobre los que se ha añadido una carretera que servirá de circuito. Esto también se ha hecho en el menú para usarlo de fondo.
 
-## Getting started
+Como hemos comentado, desde el menú se podrá escoger entre dos coches y entre dos terrenos. La elección de terreno simplemente indica que escena se cargará. Para la elección del coche, se ha creado un ScriptableObject, ChosenCarData, que guarda los prefabs tanto del coche como del fantasma asociado a este. Al pulsar el botón, este dato se guardará en un GameManager que implementa el patrón Singleton con la intención de que sea accesible desde el resto de clases y que no se destruya al cambiar de escena. Esto mismo hará el MenuManager, que contiene los métodos de manejo de escenas, y será necesario para regresar al menú o reiniciar la carrera. El uso del patrón Singleton conlleva la necesidad de una clase intermedia que permita que los botones de las escenas accedan a los métodos de los managers al ser pulsados, puesto que se pierde la referencia que se le pueda haber añadido a su OnClick. A esta clase la hemos llamado UIButtons, y contiene métodos de conexión con los dos managers, usando la instancia estática del singleton.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+Una vez se han seleccionado el coche y el circuito, se cargará la escena correspondiente.
+Las escenas de circuito contienen varios elementos destacables: un LevelManager, un GhostManager, una LapLine, un StartPoint y un RepeatCameraManager.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+El StartPoint definirá el punto donde se debe instanciar el coche seleccionado para el inicio de la carrera.
+Esto lo hará el LevelManager, que, al iniciar la escena, recuperará el coche y el fantasma del GameManager y los instanciará en la posición indicada.
+Este manager, además, implementa una versión reducida del patrón Singleton, de modo que sea único y accesible solo a nivel de la escena. Gracias a esto, el LevelManager nos servirá de conexión entre los diferentes elementos de la escena. Este se encargará de dar acceso a la instancia tanto del coche como del ghost en la escena, de mostrar por pantalla UI de fin de carrera y de activar y desactivar las cámaras de repetición de carrera.
 
-## Add your files
+## Problemas conocidos
+No se ha implementado una solución para evitar que el jugador haga trampa en la línea de salida y no recorra el circuito completo.
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+Los terrenos no son optivos y pueden provocar que el jugador se quede atascado y no pueda mover el coche. Para esto, tenemos la opción de reiniciar la carrera pero puede llegar a ser muy molesto.
 
-```
-cd existing_repo
-git remote add origin https://gitlab.com/lfusterco/pec-1-carreras-contrarreloj.git
-git branch -M main
-git push -uf origin main
-```
+El jugador puede atravesar el agua sin problema.
 
-## Integrate with your tools
-
-- [ ] [Set up project integrations](https://gitlab.com/lfusterco/pec-1-carreras-contrarreloj/-/settings/integrations)
-
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+## Vídeo
