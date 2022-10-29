@@ -35,6 +35,8 @@ Para el control de la velocidad del jugador cuando se sale de la carretera, se h
 
 Finalmente, para el control de la UI y para mostrar los tiempos de cada vuelta, de la mejor vuelta y de la vuelta actual, se crea una clase UILapTimes y un enum TypeOfLapText que definirán qué Text se actualiza. De este modo, desde LapLine, y a través de Actions, se invocará al método encargado de actualizar el texto, que comprobará, en base al tipo de Lap Text si debe reaccionar o no.
 
+De forma adicional, se han diseñado los circuitos de forma que el jugador puede acortar el camino saliéndose de la carretera.
+
 ## Problemas conocidos
 No se ha implementado una solución para evitar que el jugador haga trampa en la línea de salida y no recorra el circuito completo.
 
@@ -45,3 +47,4 @@ El jugador puede atravesar el agua sin problema.
 La reproducción de la mejor vuelta y de la carrera completa se ven con un efecto de "jitter" cuyo origen desconozco. Este es especialmente notable con la cámara de juego.
 
 ## Vídeo
+Este es el [enlace](https://youtu.be/S6cA0PwToHM) al vídeo de la PEC.
